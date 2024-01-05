@@ -1,25 +1,33 @@
 package app
 
 import (
-	"html/template"
-	"net/http"
-
-	"github.com/gorilla/mux"
+	. "github.com/Alextek777/fily/src/internal/config"
+	. "github.com/Alextek777/fily/src/internal/storage"
 )
 
-var templates *template.Template
-
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	templates.ExecuteTemplate(w, "index.html", nil)
+type Fily struct {
+	webApp *webServer
+	store  Storage
+	// auth service
 }
 
-func main() {
+func MustNewFily(cfg *Config) *Fily {
+	store, err := NewPostgresStore(cfg)
+	if err != nil {
+		panic(err)
+	}
 
-	templates = template.Must(template.ParseGlob("resources/html/*.html"))
+	err = store.InitStorage()
+	if err != nil {
+		panic(err)
+	}
 
-	router := mux.NewRouter()
-	router.HandleFunc("/", indexHandler).Methods("GET")
-	http.Handle("/", router)
-	http.ListenAndServe(":8080", nil)
+	webApp := newWebServer(cfg, store)
 
+	return &Fily{webApp: webApp, store: store}
+}
+
+func (app *Fily) RunApp() {
+
+	app.webApp.run()
 }

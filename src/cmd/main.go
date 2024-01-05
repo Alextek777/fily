@@ -4,7 +4,8 @@ import (
 	"log/slog"
 	"os"
 
-	config "github.com/Alextek777/fily/src/internal/config"
+	"github.com/Alextek777/fily/src/internal/app"
+	"github.com/Alextek777/fily/src/internal/config"
 )
 
 const (
@@ -17,8 +18,13 @@ func main() {
 	cfg := config.MustLoad()
 
 	log := setupLogger(cfg.Env)
+	slog.SetDefault(log)
+
+	fily := app.MustNewFily(cfg)
 
 	log.Info("starting application", slog.String("env", cfg.Env))
+
+	fily.RunApp()
 }
 
 func setupLogger(env string) *slog.Logger {

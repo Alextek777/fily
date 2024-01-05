@@ -8,15 +8,23 @@ import (
 )
 
 type Config struct {
-	Env string `yaml:"env" env-default:"local"`
-	Db  string `yaml:"database"`
+	Env string         `yaml:"env" env-default:"local"`
+	Db  DatabaseConfig `yaml:"database"`
+	Web WebConfig      `yaml:"web"`
 }
 
 type DatabaseConfig struct {
-	Storage_ip       string `yaml:"storage_ip" env-required:"true"`
-	Storage_port     string `yaml:"storage_port" env-required:"true"`
-	Storage_user     string `yaml:"storage_user" env-default:"postgres"`
-	Storage_password string `yaml:"storage_password env-default:"postgres""`
+	Ip       string `yaml:"ip" env-required:"true"`
+	Port     string `yaml:"port" env-required:"true"`
+	User     string `yaml:"user" env-default:"postgres"`
+	Password string `yaml:"password" env-default:"postgres"`
+	SslMode  string `yaml:"sslMode" env-default:"disable"`
+	DbName   string `yaml:"dbName" env-default:"fily"`
+}
+
+type WebConfig struct {
+	Ip   string `yaml:"ip" env-required:"true"`
+	Port string `yaml:"port" env-required:"true"`
 }
 
 func MustLoad() *Config {
