@@ -1,3 +1,9 @@
+
+function main() {
+  document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+}
+
+
 function readSingleFile(evt) {
   //Retrieve the first (and only!) File from the FileList object
   var f = evt.target.files[0]; 
@@ -20,5 +26,3 @@ function readSingleFile(evt) {
     alert("Failed to load file");
   }
 }
-
-//document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
