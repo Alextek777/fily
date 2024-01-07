@@ -21,4 +21,4 @@ function readSingleFile(evt) {
   }
 }
 
-document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+//document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
