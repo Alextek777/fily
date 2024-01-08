@@ -30,14 +30,15 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (server *webServer) run() {
+	templates = template.Must(template.ParseGlob("src/resources/*.*"))
 
-	templates = template.Must(template.ParseGlob("src/resources/html/*.html"))
 	listenAddr := fmt.Sprintf("%s:%s",
 		server.cfg.Web.Ip,
 		server.cfg.Web.Port,
 	)
 
 	router := mux.NewRouter()
+
 	router.HandleFunc("/", indexHandler).Methods("GET")
 	http.Handle("/", router)
 	http.ListenAndServe(listenAddr, nil)
